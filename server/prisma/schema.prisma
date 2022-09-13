@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id          String   @id @unique
+  client_name String
+  emails      String[]
+  boletos     Boleto[]
+
+  @@map("clients")
+}
+
+model Boleto {
+  id        String    @id // md5 hash
+  filename  String
+  filepath  String
+  nf        String
+  client    Client?   @relation(fields: [client_id], references: [id])
+  client_id String?
+  cnpj      String
+  status    Status    @default(AWAITING)
+  sent_at   DateTime? @db.Date
+  sent_to   String[]
+
+  @@map("boletos")
+}
+
+enum Status {
+  AWAITING
+  SENT
+  ERROR
+}

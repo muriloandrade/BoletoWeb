@@ -1,0 +1,73 @@
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { api } from "../api/api";
+import toast from "react-hot-toast";
+import _ from "lodash";
+import { DropzoneAreaBase } from "react-mui-dropzone";
+
+interface MyDropzoneProps {
+  getBoletos: Function;
+}
+
+export function MyDropzone(props: MyDropzoneProps) {
+  const { getBoletos } = props;
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [totalToUpload, setTotalToUpload] = useState(0);
+  const [totalUploaded, setTotalUploaded] = useState(0);
+  const prevTotalUploaded = useRef(0);
+
+ 
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    setIsLoading(true);
+    setTotalToUpload(acceptedFiles.length);
+    prevTotalUploaded.current = 0;
+    var count = 0;
+    acceptedFiles.forEach((file) => {
+      const data = new FormData();
+      data.append("file", file);
+
+      api
+        .post("/addBoleto", data, { onUploadProgress: uploadProgress })
+        .catch((error) => {
+          if (error.response) {
+            toast.error(`${error.response.data} \n(${_.truncate(file.name)})`);
+          }
+        })
+        .then(() => {
+          if (++count === acceptedFiles.length) {
+            getBoletos();
+            setIsLoading(false);
+          }
+        });
+    });
+  }, []);
+
+  return (
+    <>
+      <DropzoneAreaBase
+        onDrop={onDrop}
+        fileObjects={[]}
+        filesLimit={999}
+        dropzoneClass={classes.dropZone}
+        dropzoneText={
+          isLoading
+            ? `Carregando arquivos... ${String(totalUploaded)} / ${String(
+                totalToUpload
+              )}`
+            : "Arraste os boletos pra cá, ou clique para selecionar"
+        }
+        acceptedFiles={[".pdf"]}
+        showAlerts={false}
+        showPreviewsInDropzone={false}
+        dropzoneProps={{disabled: isLoading}}
+        disableRejectionFeedback
+      />
+    </>
+  );
+
+  function uploadProgress(progressEvent: any) {
+    const { loaded, total } = progressEvent;
+    if (loaded === total) setTotalUploaded(++prevTotalUploaded.current);
+  }
+}
