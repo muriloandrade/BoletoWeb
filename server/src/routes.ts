@@ -185,16 +185,16 @@ routes.post("/sendEmail", async (req, res) => {
 });
 
 routes.get("/sendWhatsApp", async (req, res) => {
-  const accountSid = "AC339160e7c20bd284080c944d8a278510";
-  const authToken = "dbaac52cd9229d097568a180f998e30c";
+  const accountSid = process.env.ACCOUNT_SID;
+  const authToken = process.env.AUTH_TOKEN;
 
   const client = twilio(accountSid, authToken);
 
   try {
     const message = await client.messages.create({
       mediaUrl: [
-        // `${process.env.ORIGIN}/pdfFile?filename=Boleto_CALVASLTDAME`,
-        "https://images.unsplash.com/photo-1545093149-618ce3bcf49d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80",
+        `${process.env.ORIGIN}/pdfFile?filename=Boleto_CALVASLTDAME`,
+        // "https://images.unsplash.com/photo-1545093149-618ce3bcf49d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80",
       ],
       from: "whatsapp:+14155238886",
       to: "whatsapp:+5516981100407",
