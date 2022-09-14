@@ -144,7 +144,7 @@ exports.routes.get("/sendWhatsApp", async (req, res) => {
 });
 exports.routes.get("/pdfFile", (req, res) => {
     const { filename } = req.query;
-    var data = (0, fs_1.readFileSync)(`../tmp/${filename}.pdf`);
+    var data = (0, fs_1.readFileSync)(`../tmp/uploads/${filename}.pdf`);
     res.contentType("application/pdf");
     res.send(data);
 });
