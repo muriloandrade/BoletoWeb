@@ -208,7 +208,7 @@ routes.get("/sendWhatsApp", async (req, res) => {
 routes.get("/pdfFile", (req, res) => {
   const { filename } = req.query;
 
-  var data = readFileSync(`../tmp/uploads/${filename}.pdf`);
+  var data = readFileSync(`./tmp/uploads/${filename}.pdf`);
   res.contentType("application/pdf");
   res.send(data);
 });
