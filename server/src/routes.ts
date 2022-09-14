@@ -193,7 +193,7 @@ routes.get("/sendWhatsApp", async (req, res) => {
   try {
     const message = await client.messages.create({
       mediaUrl: [
-        `${process.env.ORIGIN}/pdfFile?filename=Boleto_CALVASLTDAME`,
+        `${process.env.SERVER_URL}/pdfFile?filename=Boleto_CALVASLTDAME`,
         // "https://images.unsplash.com/photo-1545093149-618ce3bcf49d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80",
       ],
       from: "whatsapp:+14155238886",
