@@ -13,7 +13,7 @@ export const html: string = `
     </ul>
     <br/>  
     <p>
-      <span style="color: #000080; background-color: #ffff3e">Favor confirmar o recebimento</span>
+      <span style="color: #000080; background-color: #ffff3e">Favor confirmar o recebimento</span>      
     </p>
     <p><span style="font-family: 'Comic Sans MS'; font-size: 12pt; color: #7030a0">Atenciosamente,</span></p>    
     <p style="font-family: 'Trebuchet MS'; color: #7030a0">

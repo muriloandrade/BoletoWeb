@@ -188,16 +188,17 @@ routes.get("/sendWhatsApp", async (req, res) => {
   const accountSid = process.env.ACCOUNT_SID;
   const authToken = process.env.AUTH_TOKEN;
 
+  const { filename, phone_number } = req.query;
+
   const client = twilio(accountSid, authToken);
 
   try {
     const message = await client.messages.create({
       mediaUrl: [
-        `${process.env.SERVER_URL}/pdfFile?filename=Boleto_CALVASLTDAME`,
-        // "https://images.unsplash.com/photo-1545093149-618ce3bcf49d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80",
+        `${process.env.SERVER_URL}/pdfFile?filename=${filename}`,
       ],
       from: "whatsapp:+14155238886",
-      to: "whatsapp:+5516981100407",
+      to: `whatsapp:+55${phone_number}`,
     });
     return res.json(message.sid);
   } catch (e) {

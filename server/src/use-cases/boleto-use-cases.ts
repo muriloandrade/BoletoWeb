@@ -181,6 +181,7 @@ async function getDataFromPDF(file: string) {
 }
 
 const transporter = nodemailer.createTransport({
+  name: process.env.MAIL_OPT_FROM,
   port: process.env.TRANSP_PORT,
   host: process.env.TRANSP_HOST,
   secure: process.env.TRANSP_SECURE,
@@ -195,11 +196,12 @@ async function sendEmail(
   boleto: Boleto,
   client: Client
 ): Promise<SMTPTransport.SentMessageInfo> {
+
   var mailOptions = {
     name: process.env.MAIL_OPT_NAME,
     from: process.env.MAIL_OPT_FROM,
-    // to: client.emails,
-    to: ["muriloap.info.marta@gmail.com"],
+    to: client.emails,
+    // to: ["muriloap.info@gmail.com"],
     bcc: process.env.MAIL_OPT_FROM,
     subject: `${
       process.env.MAIL_OPT_SUBJECT
