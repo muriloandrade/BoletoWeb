@@ -115,11 +115,15 @@ export function AddUpdateClient(props: AddNewClientProps) {
     }
   };
 
-  const handleUpdateClient = (updateClient: ClientType) => {
+  const handleUpdateClient = (data: FieldValues) => {
+
+    const updateClient = {id: data.client_id, ...data}
+
     const doUpdateClient = async () => {
       try {
         await api.post("/updateClient", updateClient);
         toast.success("Informações atualizadas com sucesso!");
+        setClientPage(ClientPage.LIST_WITHOUT_UPDATE_CLIENT);
         await getClients();
       } catch (e) {
         toast.error(
@@ -257,7 +261,7 @@ export function AddUpdateClient(props: AddNewClientProps) {
           <Button
             variant="contained"
             // onClick={handleAddClient}
-            onClick={handleSubmit(onSubmit)}
+            onClick={handleSubmit(clientPage == ClientPage.ADD ? onSubmit : handleUpdateClient)}
           >
             Salvar
           </Button>
